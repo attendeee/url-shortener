@@ -2,6 +2,39 @@
 
 Simple url shortener implementation in go
 
+## Getting started
+
+Requirements:
+    - make
+    - sqlite3
+
+**Rename env.template**
+
+``` shell
+    mv ./env.template ./.env
+```
+
+**Install dependencies**
+
+``` shell
+    make install-dependencies
+```
+
+**Prepare database**
+
+``` shell
+    make migrate
+    make sql-gen
+```
+**Start application**
+
+``` shell
+    make build
+    make run
+```
+
+# Notes
+
 [Project ideas]("https://www.geeksforgeeks.org/go-language/golang-project-ideas/")
 
 ## Task
