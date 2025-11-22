@@ -1,2 +1,4 @@
 token
 bin
+data.sqlite
+storage/db

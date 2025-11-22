@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/attendeee/url-shortener/server"
+	"github.com/attendeee/url-shortener/storage/lite"
 	"github.com/gorilla/mux"
 )
 
@@ -17,6 +18,8 @@ func main() {
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 15,
 	})
+
+	lite.Init()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
