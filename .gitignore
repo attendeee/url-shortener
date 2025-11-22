@@ -2,3 +2,4 @@ token
 bin
 data.sqlite
 storage/db
+.env
