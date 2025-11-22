@@ -5,8 +5,8 @@ Simple url shortener implementation in go
 ## Getting started
 
 Requirements:
-    - make
-    - sqlite3
+- make
+- sqlite3
 
 **Rename env.template**
 
