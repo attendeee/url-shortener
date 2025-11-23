@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"time"
 
 	"github.com/attendeee/url-shortener/handlers"
 	"github.com/attendeee/url-shortener/server"
@@ -10,13 +9,8 @@ import (
 )
 
 func main() {
-	// Todo: add external .toml/.json/.yaml config
-	server.Init(server.Config{
-		Addr:         "127.0.0.1:3000",
-		WriteTimeout: time.Second * 15,
-		ReadTimeout:  time.Second * 15,
-		IdleTimeout:  time.Second * 15,
-	})
+
+	server.Init()
 
 	lite.Init()
 
