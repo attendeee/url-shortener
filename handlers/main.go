@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/attendeee/url-shortener/storage/lite"
 	"github.com/attendeee/url-shortener/utils"
 	"github.com/gorilla/mux"
+	"github.com/mattn/go-sqlite3"
 )
 
 var All *mux.Router
@@ -43,7 +45,7 @@ func Init() {
 		err := decoder.Decode(&url)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			log.Fatalln("Create url error: ", err)
+			log.Fatalln("[1]Create url error: ", err)
 		}
 
 		err = lite.Query.CreateShorthand(
@@ -52,8 +54,14 @@ func Init() {
 		)
 
 		if err != nil {
+			if errors.Unwrap(err) == errors.Unwrap(sqlite3.ErrConstraint) {
+				w.WriteHeader(http.StatusConflict)
+				w.Write([]byte("Shorthand already exists"))
+				return
+			}
+
 			w.WriteHeader(http.StatusInternalServerError)
-			log.Fatalln("Create url error: ", err)
+			log.Fatalln("[2]Create url error: ", err)
 		}
 
 		w.WriteHeader(http.StatusCreated)
