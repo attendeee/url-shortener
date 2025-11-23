@@ -1,19 +1,18 @@
 package main
 
 import (
-	"net/http"
 	"os"
 	"time"
 
+	"github.com/attendeee/url-shortener/handlers"
 	"github.com/attendeee/url-shortener/server"
 	"github.com/attendeee/url-shortener/storage/lite"
-	"github.com/gorilla/mux"
 )
 
 func main() {
 	// Todo: add external .toml/.json/.yaml config
 	server.Init(server.Config{
-		Addr:         "0.0.0.0:3000",
+		Addr:         "127.0.0.1:3000",
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 15,
@@ -21,13 +20,9 @@ func main() {
 
 	lite.Init()
 
-	r := mux.NewRouter()
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("I am working"))
-	})
+	handlers.Init()
 
-	server.AddRouter(r)
+	server.AddRouter(handlers.All)
 
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
