@@ -13,8 +13,8 @@ func Init() {
 	All = mux.NewRouter()
 	http.Handle("/", utils.CorsMiddleware(All))
 
-	All.HandleFunc("/view/create", func(w http.ResponseWriter, r *http.Request) {})
-	All.HandleFunc("/view/urls", func(w http.ResponseWriter, r *http.Request) {})
+	All.HandleFunc("/view/add-url", viewCreate).Methods("GET")
+	All.HandleFunc("/view/get-urls", viewGetAllUrls).Methods("GET")
 
 	All.HandleFunc("/get", getAllUrls).Methods("GET")
 
