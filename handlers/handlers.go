@@ -61,6 +61,10 @@ func createShorthand(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln("[1]Create url error: ", err)
 	}
 
+	if len(url.Longhand) == 0 || len(url.Shorthand) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
 	err = lite.Query.CreateShorthand(
 		context.Background(),
 		db.CreateShorthandParams{Longhand: url.Longhand, Shorthand: url.Shorthand},
