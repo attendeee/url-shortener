@@ -20,7 +20,10 @@ func Init() {
 	All = mux.NewRouter()
 	http.Handle("/", utils.CorsMiddleware(All))
 
-	All.HandleFunc("/url", func(w http.ResponseWriter, r *http.Request) {
+	All.HandleFunc("/view/create", func(w http.ResponseWriter, r *http.Request) {})
+	All.HandleFunc("/view/urls", func(w http.ResponseWriter, r *http.Request) {})
+
+	All.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
 		urls, err := lite.Query.GetAll(context.Background())
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -69,13 +72,13 @@ func Init() {
 
 	}).Methods("POST")
 
-	All.HandleFunc("/{url}", func(w http.ResponseWriter, r *http.Request) {
+	All.HandleFunc("/url/{url}", func(w http.ResponseWriter, r *http.Request) {
 		urlParam := mux.Vars(r)["url"]
 
 		url, err := lite.Query.GetByShorthand(context.Background(), urlParam)
 		if err != nil {
 			log.Println("Redirect url error: ", err)
-			http.Redirect(w, r, "/url", http.StatusSeeOther)
+			http.Redirect(w, r, "/read-urls", http.StatusSeeOther)
 			return
 		}
 
