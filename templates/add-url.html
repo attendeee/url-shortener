@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+        <title>Url shortener</title>
+    </head>
+    <body>
+        <h1>Add url</h1>
+        <form hx-post="/create">
+            <div>
+                <label>Url:</label>
+                <input type="text" name="url" />
+            </div>
+            <div>
+                <label>Shorthand:</label>
+                <input type="text" name="url" />
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
+

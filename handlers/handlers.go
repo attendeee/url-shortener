@@ -6,12 +6,32 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"text/template"
 
 	"github.com/attendeee/url-shortener/storage/db"
 	"github.com/attendeee/url-shortener/storage/lite"
 	"github.com/gorilla/mux"
 	"github.com/mattn/go-sqlite3"
 )
+
+var addUrlTemplate *template.Template = template.Must(template.ParseFiles("./templates/add-url.html"))
+var getUrlsTemplate *template.Template = template.Must(template.ParseFiles("./templates/get-urls.html"))
+
+func viewCreate(w http.ResponseWriter, r *http.Request) {
+	addUrlTemplate.Execute(w, nil)
+
+}
+
+func viewGetAllUrls(w http.ResponseWriter, r *http.Request) {
+	urls, err := lite.Query.GetAll(context.Background())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Fatalln("Get all url on view error: ", err)
+	}
+
+	getUrlsTemplate.Execute(w, urls)
+
+}
 
 func getAllUrls(w http.ResponseWriter, r *http.Request) {
 	urls, err := lite.Query.GetAll(context.Background())
@@ -30,6 +50,7 @@ func getAllUrls(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(urlsResponse))
 
 }
+
 func createShorthand(w http.ResponseWriter, r *http.Request) {
 	var url db.Url
 
