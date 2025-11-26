@@ -3,23 +3,57 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
         <title>Url shortener</title>
     </head>
     <body>
         <h1>Add url</h1>
-        <form hx-post="/create">
+        <form id="myForm" onsubmit="sendData(event)">
             <div>
                 <label>Url:</label>
-                <input type="text" name="url" />
+                <input type="text" id="Longhand" name="longhand" required />
             </div>
             <div>
                 <label>Shorthand:</label>
-                <input type="text" name="url" />
+                <input type="text" id="Shorthand" name="shorthand" required />
             </div>
 
-            <button type="submit">Submit</button>
+            <button type="submit" >Submit</button>
         </form>
+
+        <script>
+            async function sendData(event) {
+                event.preventDefault(); // Prevent form submission
+
+                const formData = new FormData(event.target);
+                const json = Object.fromEntries(formData.entries());
+
+                const response = await fetch('/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(json),
+                });
+
+                switch (response.status) {
+                    case 201: 
+                        alert("Created"); 
+                        break;
+                    case 400: 
+                        alert("Incorrectly sended data"); 
+                        break;
+                    case 409: 
+                        alert("Shorthand already exists"); 
+                        break;
+                    case 500: 
+                        alert("Internal server error"); 
+                        break;
+                    default: 
+                        alert(`Unexpected Error`);
+                        break;
+                }
+            }
+        </script>
     </body>
 </html>
 
