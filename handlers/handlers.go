@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"log"
@@ -91,8 +92,11 @@ func redirectByUrlParam(w http.ResponseWriter, r *http.Request) {
 
 	url, err := lite.Query.GetByShorthand(context.Background(), urlParam)
 	if err != nil {
-		log.Println("Redirect url error: ", err)
-		http.Redirect(w, r, "/read-urls", http.StatusSeeOther)
+		if errors.Unwrap(err) != errors.Unwrap(sql.ErrNoRows) {
+			log.Println("Redirect url error: ", err)
+		}
+
+		http.Redirect(w, r, "/view/get-urls", http.StatusSeeOther)
 		return
 	}
 
