@@ -34,6 +34,10 @@ func viewGetAllUrls(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func notFoundUrlHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/view/get-urls", http.StatusSeeOther)
+}
+
 func getAllUrls(w http.ResponseWriter, r *http.Request) {
 	urls, err := lite.Query.GetAll(context.Background())
 	if err != nil {
